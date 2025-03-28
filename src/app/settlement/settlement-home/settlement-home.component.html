@@ -1,0 +1,37 @@
+<!-- <h1>{{ responseFromAPI }}</h1>
+
+<div>
+    <h1>{{ modelResponse?.serverTime }}</h1>
+    <h1>{{ modelResponse?.token }}</h1>
+    <ul>
+        @for (message of modelResponse?.messages ?? []; track message) {
+        <li>
+            {{ message }}
+        </li>
+        }
+    </ul>
+    <h1>
+        {{modelResponse?.towns?.[0]?.metal ?? 'N/A'}}
+    </h1>
+    <h1>
+        {{modelResponse?.towns?.[0]?.deletionTime}}
+    </h1>
+</div>
+
+<div>
+    <h1>{{ userFromModelResponse?.name }}</h1>
+    <h1>{{ userFromModelResponse?.password }}</h1>
+    <h1>{{ userFromModelResponse?.passwordChanged }}</h1>
+    <h1>{{ userFromModelResponse?.id }}</h1>
+    <h1>{{ userFromModelResponse?.name }}</h1>
+</div> -->
+
+<app-resources-bar class="resourcesBar" [resources]="resourcesForBar()"></app-resources-bar>
+<div class="game-container">
+  
+    <app-dashboard class="dashboard"></app-dashboard>
+  <div class="settlement-content">
+    <app-main-window class="main-window" [settlementData]="currentSettlement()"></app-main-window>
+  </div>
+</div>
+

@@ -1,0 +1,15 @@
+.main-content {
+    display: flex;
+    min-height: 100vh; /* Ensures it fills the viewport (or use fixed px) */
+    position: relative; /* Optional: Helps with positioning */
+  }
+  .settlement-name {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  h3 {
+    margin: 0;
+    text-align: right; /* If you want right-aligned text */
+  }

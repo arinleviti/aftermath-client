@@ -1,0 +1,49 @@
+.navbar {
+    background: rgba(0, 0, 0, 0.9); /* Dark background for a futuristic look */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center; /* Centers the items */
+    box-shadow: 0 0 10px cyan; /* Neon glow effect */
+    height: 60px;
+  }
+  
+  .navbar ul {
+    list-style: none; /* Removes default bullet points */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Makes items appear in a row */
+    gap: 30px; /* Adds spacing between items */
+  }
+  
+  .navbar li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px; /* Adjust as needed */
+    height: 40px; /* Box height */
+    background: rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 0 5px cyan;
+    font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    color: cyan;
+    position: relative; /* Needed for absolute positioning of the label */
+  }
+  
+  .navbar li span {
+    font-size: 14px;
+    color: lightcyan;
+    text-transform: uppercase;
+    font-weight: normal;
+    position: absolute;
+    bottom: -25px; /* Moves label below the box */
+    white-space: nowrap;
+  }
+  
+  .navbar li:hover {
+    background: cyan;
+    color: black;
+    box-shadow: 0 0 15px cyan;
+  }
