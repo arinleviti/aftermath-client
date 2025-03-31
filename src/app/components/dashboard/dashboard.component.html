@@ -1,12 +1,22 @@
-<div class="sidebar">
-    <button >Scrape Yard</button>
-    <button >Water Purifier</button>
-    <button >Oil Rig</button>
-    <button >Warehouse</button>
-    <button >Water Tank</button>
-    <button >Oil Tank</button>
-    <button >Solar Plant</button>
-    <button >Workshop</button>
-    <button >Garage</button>
-    <button >Laboratory</button>
+<!-- <div class="sidebar">
+    <button >Buildings</button>
+    <button >Research</button>
+    <button >Units</button>
+    <button >Civil Units</button>
+    <button >Defense</button>
+    <button >Deployment</button>
+    <button >Exploration</button>
+   
+  </div> -->
+
+  <div class="sidebar">
+    @for (category of ['Buildings', 'Research', 'Units', 'Civil Units', 'Defense', 'Deployment', 'Exploration']; track $index) {
+      <button (click)="openSubmenu(category)">
+        {{category}}
+      </button>
+    }
   </div>
+
+  <!-- <app-submenu [submenuItems]="submenuItems" [title]="selectedCategory"></app-submenu> -->
+
+

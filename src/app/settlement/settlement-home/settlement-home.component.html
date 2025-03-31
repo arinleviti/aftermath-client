@@ -29,9 +29,12 @@
 <app-resources-bar class="resourcesBar" [resources]="resourcesForBar()"></app-resources-bar>
 <div class="game-container">
   
-    <app-dashboard class="dashboard"></app-dashboard>
+    <app-dashboard class="dashboard" (selectedCategory)="selectedCategory = $event"
+    (submenuItems)="submenuItems = $event"></app-dashboard>
   <div class="settlement-content">
     <app-main-window class="main-window" [settlementData]="currentSettlement()"></app-main-window>
   </div>
 </div>
+
+<app-submenu [submenuItems]="submenuItems" [title]="selectedCategory"></app-submenu>
 

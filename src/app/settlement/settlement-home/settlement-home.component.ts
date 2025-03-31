@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { AccountService } from '../../_services/account.service';
 import { ApiResponseDto } from '../../dtos/apiResponseDto';
 import { map } from 'rxjs';
@@ -7,11 +7,13 @@ import { CommonModule } from '@angular/common';
 import { ResourcesBarComponent } from "../../components/resources-bar/resources-bar.component";
 import {  MainWindowComponent } from "../../components/main-window/main-window.component";
 import { DashboardComponent } from "../../components/dashboard/dashboard.component";
+import { SubmenuComponent } from '../../components/submenu/submenu.component';
+
 
 @Component({
   selector: 'app-settlement-home',
   standalone: true,
-  imports: [CommonModule, ResourcesBarComponent, DashboardComponent, MainWindowComponent],
+  imports: [CommonModule, ResourcesBarComponent, DashboardComponent, MainWindowComponent, SubmenuComponent],
   templateUrl: './settlement-home.component.html',
   styleUrl: './settlement-home.component.css'
 })
@@ -22,6 +24,9 @@ export class SettlementHomeComponent implements OnInit {
   responseFromAPI?: boolean;
   modelResponse = signal< ApiResponseDto | undefined>(undefined); 
   userFromModelResponse?: UserDto;
+
+  selectedCategory: string | null = null;
+  submenuItems: string[] = [];
 
   resourcesForBar = computed(() => {
     const model = this.modelResponse();
@@ -86,5 +91,5 @@ ngOnInit(): void {
     })
   }
 
- 
+
 }

@@ -1,11 +1,11 @@
 .main-content {
     display: flex;
-    min-height: 100vh; /* Ensures it fills the viewport (or use fixed px) */
+    max-height: 100vh; /* Ensures it fills the viewport (or use fixed px) */
     position: relative; /* Optional: Helps with positioning */
   }
   .settlement-name {
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    margin-top: auto;
     width: 100%;
   }
   

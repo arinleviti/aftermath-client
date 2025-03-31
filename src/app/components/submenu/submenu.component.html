@@ -1,0 +1,8 @@
+<div class="submenu">
+  <h2>{{ title() }}</h2>
+  @for ( item of submenuItems(); track $index) {
+  <button>
+    {{ item }}
+  </button>
+  }
+</div>
