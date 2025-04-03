@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 
 
 @Component({
@@ -9,16 +9,18 @@ import { Component, inject, input } from '@angular/core';
 })
 export class SubmenuComponent {
 
-  submenuItems= input<string[]>();
- title = input<string | null>();
+  submenuItems = input<string[]>();
+  title = input<string | null>();
 
- selectedSubmenuItem: string | null = null;
+  selectedSubmenuItem: string | null = null;
+  submenuItemClicked = output<boolean>();
 
- openSubmenuItem(item: string) {
-  this.selectedSubmenuItem = item;
- }
-
- closeWindow() {
-  this.selectedSubmenuItem = null;
- }
+  onItemClicked() {
+    this.submenuItemClicked.emit(true);
+  } 
+  closeWindow() {
+    this.selectedSubmenuItem = null;
+  }
+  toggleSubmenuWindow() {
+}
 }

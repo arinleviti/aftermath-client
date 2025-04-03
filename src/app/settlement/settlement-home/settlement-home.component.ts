@@ -8,41 +8,47 @@ import { ResourcesBarComponent } from "../../components/resources-bar/resources-
 import {  MainWindowComponent } from "../../components/main-window/main-window.component";
 import { DashboardComponent } from "../../components/dashboard/dashboard.component";
 import { SubmenuComponent } from '../../components/submenu/submenu.component';
+import { UpgradeAssetsWindowComponent } from "../../components/upgrade-assets-window/upgrade-assets-window.component";
 
 
 @Component({
   selector: 'app-settlement-home',
   standalone: true,
-  imports: [CommonModule, ResourcesBarComponent, DashboardComponent, MainWindowComponent, SubmenuComponent],
+  imports: [CommonModule, ResourcesBarComponent, DashboardComponent, MainWindowComponent, SubmenuComponent, UpgradeAssetsWindowComponent],
   templateUrl: './settlement-home.component.html',
   styleUrl: './settlement-home.component.css'
 })
 export class SettlementHomeComponent implements OnInit {
   private accountService = inject(AccountService);
-  name = 'arin';
+  name = 'draco';
   userId = '55';
   responseFromAPI?: boolean;
   modelResponse = signal< ApiResponseDto | undefined>(undefined); 
   userFromModelResponse?: UserDto;
-
+  submenuItemClicked: boolean = false;
   selectedCategory: string | null = null;
   submenuItems: string[] = [];
 
   resourcesForBar = computed(() => {
     const model = this.modelResponse();
     return {
-      metal: model?.selectedTown?.metal ?? 0,
-      oil: model?.selectedTown?.oil ?? 0,
-      water: model?.selectedTown?.water ?? 0,
+      metal: Math.floor(model?.selectedTown?.metal ?? 0),
+      oil: Math.floor(model?.selectedTown?.oil ?? 0),
+      water: Math.floor(model?.selectedTown?.water ?? 0),
       energy: 0,
-      uranium: model?.selectedTown?.uranium ?? 0
+      uranium: Math.floor(model?.selectedTown?.uranium ?? 0)
     };
   });
   
   currentSettlement = computed(() =>{
   const model = this.modelResponse();
   return {
-    settlement: model?.selectedTown?.name ?? 'no town found'
+    settlement: model?.selectedTown?.name ?? 'no town found',
+    windSpeed: model?.selectedTown?.windSpeed ?? 0,
+    maxSize: model?.selectedTown?.size ?? 0,
+    continent: model?.selectedTown?.position?.continent ?? 'coordinates not found',
+    region: model?.selectedTown?.position?.region ?? 'coordinates not found',
+    area: model?.selectedTown?.position?.area ?? 'coordinates not found'
   };
   }
 )
@@ -90,6 +96,11 @@ ngOnInit(): void {
       }
     })
   }
-
-
+  onSubmenuItemClicked(clicked: boolean) {
+    console.log('Submenu clicked:', clicked); 
+    this.submenuItemClicked = clicked; // Update the flag to show/hide the window
+  }
+  onUpgradeWindowClosed() {
+    this.submenuItemClicked = false;  // This will hide the window
+  }
 }

@@ -1,13 +1,11 @@
+import { PositionDto } from "./positionDto";
+
 export interface TownDto {
     id: number;
     userId: number;
     userName: string;
     name: string;
-    position: {
-      continent: number;
-      region: number;
-      area: number;
-    };
+    position: PositionDto;
     size: number;
     windSpeed: number;
     metal: number;

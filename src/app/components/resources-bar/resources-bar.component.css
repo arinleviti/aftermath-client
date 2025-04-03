@@ -13,6 +13,7 @@
     padding: 0;
     display: flex; /* Makes items appear in a row */
     gap: 30px; /* Adds spacing between items */
+    align-items: center; /* Ensures all items are vertically centered */
   }
   
   .navbar li {
@@ -20,7 +21,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80px; /* Adjust as needed */
+    min-width: 80px; /* Adjust as needed */
+    padding: 0 15px; /* Added horizontal padding */
     height: 40px; /* Box height */
     background: rgba(0, 255, 255, 0.2);
     border-radius: 8px;

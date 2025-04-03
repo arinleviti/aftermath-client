@@ -1,5 +1,5 @@
 export interface PositionDto {
-    continent: number,
-    region: number,
-    area: number
+    continent: string |number,
+    region: string | number,
+    area: string | number
 }

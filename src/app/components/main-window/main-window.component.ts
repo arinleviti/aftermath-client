@@ -1,4 +1,5 @@
 import { Component, input, Input } from '@angular/core';
+import { TownDto } from '../../dtos/townDto';
 
 @Component({
   selector: 'app-main-window',
@@ -9,5 +10,12 @@ import { Component, input, Input } from '@angular/core';
 })
 export class MainWindowComponent {
 
-settlementData = input<{settlement: string}>();
+settlementData = input<{
+settlement: string,
+windSpeed: number,
+maxSize: number,
+continent: string| number,
+region: string| number,
+area: string |number,}
+>();
 }

@@ -1,0 +1,74 @@
+<!-- upgrade-asset-window.component.html -->
+<div class="upgrade-window">
+  <!-- Close Button -->
+   <div>
+     <button class="close-button" (click)="onCloseWindow()" title="Close window">X</button>
+   </div>
+ 
+  
+  <!-- Upgrade Button with label -->
+  <div class="upgrade-section">
+    <h4>Upgrade Building</h4>
+    <button class="upgrade-button" (click)="upgrade()">
+      UPGRADE TO LEVEL {{ (submenuItem?.currentLevel || 0) + 1 }}
+    </button>
+  </div>
+
+  <!-- Cost Boxes with title -->
+  <div class="costs-section">
+    <h4>Upgrade Costs</h4>
+    <div class="cost-boxes">
+      <div class="cost-box metal-cost">
+        <img src="assets/icons/metal.png" alt="Metal" />
+        <div class="cost-label">
+          <span class="cost-name">Metal:</span>
+          <span class="cost-value">{{ submenuItem?.cost?.metal || 0 }}</span>
+        </div>
+      </div>
+      <div class="cost-box water-cost">
+        <img src="assets/icons/water.png" alt="Water" />
+        <div class="cost-label">
+          <span class="cost-name">Water:</span>
+          <span class="cost-value">{{ submenuItem?.cost?.water || 0 }}</span>
+        </div>
+      </div>
+      <div class="cost-box oil-cost">
+        <img src="assets/icons/oil.png" alt="Oil" />
+        <div class="cost-label">
+          <span class="cost-name">Oil:</span>
+          <span class="cost-value">{{ submenuItem?.cost?.oil || 0 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Building Image with label -->
+  <div class="building-section">
+    <h4>Building Preview</h4>
+    <div class="building-image-container">
+      <img [src]="'assets/buildings/' + submenuItem?.name + '.png'" [alt]="submenuItem?.name" />
+      <div class="building-name">{{ submenuItem?.name }}</div>
+    </div>
+  </div>
+
+  <!-- Description section -->
+  <div class="description-section">
+    <h4>Building Details</h4>
+    <div class="description-content">
+      <p class="description-text">{{ submenuItem?.description || 'No description available' }}</p>
+      
+      <div class="stats">
+        @if (submenuItem?.production) {
+        <div class="stat-row">
+          <span class="stat-name">Production:</span>
+          <span class="stat-value">{{ submenuItem?.productionDuration }}</span>
+        </div>
+        }
+        <div class="stat-row">
+          <span class="stat-name">Current Level:</span>
+          <span class="stat-value">{{ submenuItem?.currentLevel || 0 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
