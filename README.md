@@ -1,3 +1,30 @@
+# Aftermath Client (Angular)
+
+## Setup
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/arinleviti/aftermath-client.git
+   cd aftermath-client
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the app:
+   ```bash
+   ng serve
+   ```
+   - App: [http://localhost:4200](http://localhost:4200)  
+   - **Note**: Automatically connects to the Azure backend.
+
+## Troubleshooting
+- **API not responding?**  
+  Check if the Azure backend is online and CORS is enabled for `localhost:4200`.
+- **Port in use?**  
+  Run `ng serve --port 4201` to use a different port.
+
 # AftermathClient
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.
