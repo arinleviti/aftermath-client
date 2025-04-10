@@ -8,15 +8,23 @@
     <app-main-window class="main-window" [settlementData]="currentSettlement()"></app-main-window>
   </div>
 </div>
+<!-- [submenuItems] and [title] are receiving data from the parent component (SettlementHomeComponent) and passing it down to the child component (SubmenuComponent). -->
 @if (selectedCategory) { 
   <div class="submenu-container">
-    <app-submenu class="submenu" [submenuItems]="submenuItems" [title]="selectedCategory" (submenuItemClicked)="onSubmenuItemClicked($event)"></app-submenu>
-  </div>
+    <app-submenu class="submenu" 
+    [submenuItems]="submenuItems" 
+    [title]="selectedCategory" 
+    (submenuItemClicked)="onSubmenuItemClicked($event)" 
+    (submenuItemSelectedOut) = "selectedItemFromSubmenu = $event"></app-submenu>
+  </div> <!-- (submenuItemClicked)="onSubmenuItemClicked($event)" turns submenu visible.
+  (submenuItemSelectedOut) = "selectedItemFromSubmenu" retrieves the submenu item clicked -->
 } 
 
 @if(submenuItemClicked){
   <div class="upgrade-asset-window">
-    <app-upgrade-assets-window (closeWindow)="onUpgradeWindowClosed()"></app-upgrade-assets-window>
+    <app-upgrade-assets-window 
+    (closeWindow)="onUpgradeWindowClosed()"
+    [selectedCategoryFromSubmenu] = "selectedItemFromSubmenu"></app-upgrade-assets-window>
   </div>
 }
 

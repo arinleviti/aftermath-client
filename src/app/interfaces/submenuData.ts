@@ -1,4 +1,4 @@
-export interface SubmenuItem {
+export interface SubmenuData {
     id: string;              // Unique identifier (e.g., "scrapeyard")
     name: string;            // Display name (e.g., "Scrapeyard")
     description: string;     // Short description of the item

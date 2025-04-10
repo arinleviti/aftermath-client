@@ -14,9 +14,11 @@ export class SubmenuComponent {
 
   selectedSubmenuItem: string | null = null;
   submenuItemClicked = output<boolean>();
+  submenuItemSelectedOut = output<string | null>();
 
-  onItemClicked() {
+  onItemClicked(submenuItem: string) {
     this.submenuItemClicked.emit(true);
+    this.submenuItemSelectedOut.emit(submenuItem);
   } 
   closeWindow() {
     this.selectedSubmenuItem = null;

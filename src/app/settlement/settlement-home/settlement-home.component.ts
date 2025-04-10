@@ -20,14 +20,15 @@ import { UpgradeAssetsWindowComponent } from "../../components/upgrade-assets-wi
 })
 export class SettlementHomeComponent implements OnInit {
   private accountService = inject(AccountService);
-  name = 'draco';
-  userId = '55';
+  name = this.accountService.userName;
+  userId = this.accountService.userId;
   responseFromAPI?: boolean;
   modelResponse = signal< ApiResponseDto | undefined>(undefined); 
   userFromModelResponse?: UserDto;
   submenuItemClicked: boolean = false;
   selectedCategory: string | null = null;
   submenuItems: string[] = [];
+  selectedItemFromSubmenu: string | null = null;
 
   resourcesForBar = computed(() => {
     const model = this.modelResponse();
