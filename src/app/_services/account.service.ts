@@ -25,12 +25,20 @@ export class AccountService {
     return this.http.get<ApiResponseDto>(`${this.apiUrl}/Model/${userId}`)
   }
 
-  upgradeAssets(upgradeDtoObj: UpgradeDto) {
+  upgradeBuildings(upgradeDtoObj: UpgradeDto | null) {
     return this.http.post<UpgradeDto>(`${this.apiUrl}/Upgrade`, upgradeDtoObj, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       responseType: 'text' as 'json' // Type assertion to satisfy Angular's type definitions
     }
-  ) as unknown as Observable<string>; // Final type assertion
-;
+    ) as unknown as Observable<string>; // Final type assertion
+    ;
+  }
+
+  research(upgradeDtoObj: UpgradeDto) {
+    return this.http.post<UpgradeDto>(`${this.apiUrl}/Research`, upgradeDtoObj, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      responseType: 'text' as 'json' // Type assertion to to make Angular's type system accept it
+    }
+    ) as unknown as Observable<string>; // Final type assertion
   }
 }

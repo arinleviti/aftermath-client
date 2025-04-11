@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, untracked } from '@angular/core';
 import { BuildingDataService } from '../../_services/building-data.service';
 import { SubmenuData } from '../../interfaces/submenuData';
 import { ItemType } from '../../shared/enums/itemType';
@@ -14,7 +14,7 @@ import { TownDto } from '../../dtos/townDto';
   templateUrl: './upgrade-assets-window.component.html',
   styleUrl: './upgrade-assets-window.component.css'
 })
-export class UpgradeAssetsWindowComponent implements OnInit {
+export class UpgradeAssetsWindowComponent /* implements OnInit */ {
   buildingDataService = inject(BuildingDataService);
   closeWindow = output<boolean>();
   submenuItem: SubmenuData | null = null;
@@ -23,8 +23,33 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   selectedCategoryFromSubmenu = input<string | null>();
   currentAssetLevel: number | null = null;
   itemType: number | null  =null;
+  upgradeDtoObj: UpgradeDto | null = null;
 
-ngOnInit(): void {
+  private updateSubmenuItemsEffect = effect(() => {
+    const selectedCategory = this.selectedCategoryFromSubmenu();
+    
+    if (selectedCategory) {
+      untracked(() => {
+        this.initializeWindow();
+      });
+    }
+  }); 
+
+  initializeWindow() {
+    this.itemType = this.findCorrespondingNumber();
+  this.findTownId().subscribe({
+    next: (townId) => {
+      this.currentTownId = townId;
+      console.log('Current town ID:', this.currentTownId);
+    },
+    error: (err) => {
+      console.error('Error retrieving town ID:', err);
+    }
+  });
+  
+  }
+
+/* ngOnInit(): void {
   this.itemType = this.findCorrespondingNumber();
   this.findTownId().subscribe({
     next: (townId) => {
@@ -36,7 +61,7 @@ ngOnInit(): void {
     }
   });
   
-}
+} */
 // Get the corresponding number for the selected category
   findCorrespondingNumber(): number | null {
 
@@ -69,15 +94,16 @@ ngOnInit(): void {
     );
   }
 
+  upgradeBService = this.accountService.upgradeBuildings(this.upgradeDtoObj);
   // Handle the upgrade process
-  upgrade() {
+  upgradeBuilding() {
     if (this.itemType === null || this.currentTownId === null) {
       console.error('Invalid item type or town ID');
       return;
     }
 
-    const upgradeDtoObj = this.createUpgradeDto(this.currentTownId, this.itemType);
-    this.accountService.upgradeAssets(upgradeDtoObj).subscribe({
+    this.upgradeDtoObj = this.createUpgradeDto(this.currentTownId, this.itemType);
+    this.accountService.upgradeBuildings(this.upgradeDtoObj).subscribe({
       next: (result) => {
         console.log('Upgrade successful:', result);
       },
@@ -85,6 +111,10 @@ ngOnInit(): void {
         console.error('Error during upgrade:', err);
       }
     });
+  }
+
+  upgradeResearch(){
+
   }
 
   onCloseWindow() {

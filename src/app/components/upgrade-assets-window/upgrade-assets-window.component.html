@@ -18,8 +18,8 @@
   <!-- Upgrade Button with label -->
   <div class="upgrade-section">
     <h4>Upgrade Building</h4>
-    <button class="upgrade-button" (click)="upgrade()">
-      UPGRADE TO LEVEL {{ (submenuItem?.currentLevel || 0) + 1 }}
+    <button class="upgrade-button" (click)="upgradeBuilding()">
+      UPGRADE TO LEVEL {{ (currentAssetLevel!) + 1 }}
     </button>
   </div>
 
@@ -73,10 +73,7 @@
           <span class="stat-value">{{ submenuItem?.productionDuration }}</span>
         </div>
         }
-        <div class="stat-row">
-          <span class="stat-name">Current Level:</span>
-          <span class="stat-value">{{ submenuItem?.currentLevel || 0 }}</span>
-        </div>
+        
       </div>
     </div>
   </div>

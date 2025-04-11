@@ -7,11 +7,11 @@ import { SubmenuData } from '../interfaces/submenuData';
 export class MenuService {
 
   menuData: Record<string, string[]> = {
-    'Buildings': ['ScrapeYard', 'WaterPurifier', 'Oil Rig', 'Wharehouse', 'Water Tank', 'Oil Tank', 'Solar Plant', 'Workshop', 'Garage', 'Laboratory'],
+    'Buildings': ['ScrapeYard', 'WaterPurifier', 'OilRig', 'Wharehouse', 'WaterTank', 'OilTank', 'SolarPlant', 'Workshop', 'Garage', 'Laboratory'],
     'Research': ['Electricity', 'Machinery', 'Combustion', 'Scouting', 'Survival', 'Leadership', 'Shield', 'Weapons', 'Structural'],
     'Units': ['Bike Rider', 'Quad Rider', 'Spitfire', 'Armored Car', 'Armor', 'Katyusha'],
-    'Civil Units': ['Scout', 'Minivan', 'Truck', 'Garbage Truck', 'Armored Bus', 'Windmill'],
-    'Defense': ['Rifle Man', 'Flame Thrower', 'Rocket Launcher', 'Mortar', 'Machine Gun'],
+    'Civil Units': ['Scout', 'Minivan', 'Truck', 'GarbageTruck', 'ArmoredBus', 'Windmill'],
+    'Defense': ['RifleMan', 'FlameThrower', 'RocketLauncher', 'Mortar', 'MachineGun'],
     'Deployment': [],
     'Exploration': []
   }
