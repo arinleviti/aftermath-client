@@ -14,7 +14,7 @@ import { TownDto } from '../../dtos/townDto';
   templateUrl: './upgrade-assets-window.component.html',
   styleUrl: './upgrade-assets-window.component.css'
 })
-export class UpgradeAssetsWindowComponent /* implements OnInit */ {
+export class UpgradeAssetsWindowComponent implements OnInit {
   buildingDataService = inject(BuildingDataService);
   closeWindow = output<boolean>();
   submenuItem: SubmenuData | null = null;
@@ -24,6 +24,12 @@ export class UpgradeAssetsWindowComponent /* implements OnInit */ {
   currentAssetLevel: number | null = null;
   itemType: number | null  =null;
   upgradeDtoObj: UpgradeDto | null = null;
+  isBuildingUpgradeButton: boolean = false;
+  isResearchUpgradeButton: boolean = false;
+
+  ngOnInit(): void {
+    this.initializeWindow(); // force it on component init
+  }
 
   private updateSubmenuItemsEffect = effect(() => {
     const selectedCategory = this.selectedCategoryFromSubmenu();
@@ -83,15 +89,33 @@ export class UpgradeAssetsWindowComponent /* implements OnInit */ {
         const town = response.selectedTown;
         if (town)
         this.currentAssetLevel = this.findCurrentAssetLevel(this.itemType, town);
+        
         console.log('Town found:', town);
         if (town) {
           console.log('Town found:', town);
-          return town.id;
+          this.buttonSwitcher(town.id);
+          return town.id;         
         } else {
           throw new Error('Town not found in the response');
         }
       })
     );
+  }
+
+  buttonSwitcher(currentTownId: number | null) {
+    if (this.itemType === null || currentTownId === null) {
+      console.error('Invalid item type or town ID');
+      return;
+    }
+    if (this.itemType >= 0 && this.itemType <= 10) {
+      this.isBuildingUpgradeButton = true;
+      this.isResearchUpgradeButton = false;
+    }
+    if( this.itemType >= 31 && this.itemType <= 39) {
+      this.isBuildingUpgradeButton = false;
+      this.isResearchUpgradeButton = true;
+    }
+
   }
 
   upgradeBService = this.accountService.upgradeBuildings(this.upgradeDtoObj);
@@ -114,6 +138,19 @@ export class UpgradeAssetsWindowComponent /* implements OnInit */ {
   }
 
   upgradeResearch(){
+    if (this.itemType === null || this.currentTownId === null) {
+      console.error('Invalid item type or town ID');
+      return;
+    }
+    this.upgradeDtoObj = this.createUpgradeDto(this.currentTownId, this.itemType);
+    this.accountService.research(this.upgradeDtoObj).subscribe({
+      next: (result) => {
+        console.log('Research successful:', result);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error during research:', err);
+      }
+    });
 
   }
 
@@ -134,10 +171,15 @@ export class UpgradeAssetsWindowComponent /* implements OnInit */ {
   findCurrentAssetLevel(itemType: number | null , townDto: TownDto): number {
     switch (itemType) {
       case 0: return townDto.metalLvl;
+      case 1: return townDto.metalStorageLvl
       case 2: return townDto.oilLvl;
+      case 3: return townDto.oilStorageLvl;
       case 4: return townDto.waterLvl;
+      case 5: return townDto.waterStorageLvl;
       case 6: return townDto.solarPlantLvl;
+
       default: return 0; // or handle other cases as needed
+
     }
   }
 }
