@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { API_BASE_URL } from '../injection-tokens/app.config';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ApiResponseDto } from '../dtos/apiResponseDto';
@@ -12,7 +12,7 @@ export class AccountService {
 
 
   userName = 'draco';
-  userId = '55';
+  userId = 55;
 
   private apiUrl = inject(API_BASE_URL);
   private http = inject(HttpClient)
@@ -21,7 +21,7 @@ export class AccountService {
     return this.http.get<boolean>(`${this.apiUrl}/UserExists/${name}`)
   }
 
-  retrieveModelData(userId: string) {
+  retrieveModelData(userId: number) {
     return this.http.get<ApiResponseDto>(`${this.apiUrl}/Model/${userId}`)
   }
 

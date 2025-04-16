@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output, untracked } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, signal, untracked } from '@angular/core';
 import { BuildingDataService } from '../../_services/building-data.service';
 import { SubmenuData } from '../../interfaces/submenuData';
 import { ItemType } from '../../shared/enums/itemType';
@@ -7,6 +7,7 @@ import { map, Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UpgradeDto } from '../../dtos/upgradeDto';
 import { TownDto } from '../../dtos/townDto';
+import { ApiResponseDto } from '../../dtos/apiResponseDto';
 
 @Component({
   selector: 'app-upgrade-assets-window',
@@ -22,13 +23,17 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   currentTownId: number | null = null;
   selectedCategoryFromSubmenu = input<string | null>();
   currentAssetLevel: number | null = null;
+  currentResearchLvl= signal<number | null>(null);
   itemType: number | null  =null;
   upgradeDtoObj: UpgradeDto | null = null;
   isBuildingUpgradeButton: boolean = false;
   isResearchUpgradeButton: boolean = false;
 
+  modelResponse = signal< ApiResponseDto | undefined>(undefined); 
+
   ngOnInit(): void {
     this.initializeWindow(); // force it on component init
+    this.retrieveModelData(this.accountService.userId);
   }
 
   private updateSubmenuItemsEffect = effect(() => {
@@ -94,6 +99,11 @@ export class UpgradeAssetsWindowComponent implements OnInit {
         if (town) {
           console.log('Town found:', town);
           this.buttonSwitcher(town.id);
+          if(this.isResearchUpgradeButton === true) {
+            this.retrieveModelData(this.accountService.userId);
+            this.currentResearchLvl.set(this.findcurrentResearchLvl(this.itemType, this.accountService.userId));
+            console.log('Current research level:', this.currentResearchLvl);
+          }
           return town.id;         
         } else {
           throw new Error('Town not found in the response');
@@ -145,6 +155,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     this.upgradeDtoObj = this.createUpgradeDto(this.currentTownId, this.itemType);
     this.accountService.research(this.upgradeDtoObj).subscribe({
       next: (result) => {
+        this.retrieveModelData(this.accountService.userId);
         console.log('Research successful:', result);
       },
       error: (err: HttpErrorResponse) => {
@@ -168,6 +179,35 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     };
   }
 
+  retrieveModelData(userId: number) {
+    this.accountService.retrieveModelData(userId).subscribe({
+      next: response => {
+        this.modelResponse.set(response);
+      },
+      error: err => {
+        console.error('Error occured while retrieving the model', err);
+      }
+    })
+  }
+
+  findcurrentResearchLvl(itemType: number | null, userId: number | null) : number {
+    if (userId === null) {
+      throw new Error('User ID cannot be null when finding current research');
+    }
+    switch (itemType) {
+      case 31: return this.modelResponse()?.user.combustionLvl ?? 0;
+      case 32: return this.modelResponse()?.user.electricityLvl ?? 0;
+      case 33: return this.modelResponse()?.user.leaderShipLvl ?? 0;
+      case 34: return this.modelResponse()?.user.machineryLvl ?? 0;
+      case 35: return this.modelResponse()?.user.scoutingLvl ?? 0;
+      case 36: return this.modelResponse()?.user.weaponsLvl ?? 0;
+      case 37: return this.modelResponse()?.user.shieldLvl ?? 0;
+      case 38: return this.modelResponse()?.user.structuralLvl ?? 0;
+      case 39: return this.modelResponse()?.user.survivalLvl ?? 0;
+      default: return 0;
+    }
+  }
+
   findCurrentAssetLevel(itemType: number | null , townDto: TownDto): number {
     switch (itemType) {
       case 0: return townDto.metalLvl;
@@ -177,9 +217,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
       case 4: return townDto.waterLvl;
       case 5: return townDto.waterStorageLvl;
       case 6: return townDto.solarPlantLvl;
-
-      default: return 0; // or handle other cases as needed
-
+      default: return 0; 
     }
   }
 }

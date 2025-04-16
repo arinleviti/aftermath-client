@@ -14,11 +14,18 @@
     
     <span class="resource-name">{{selectedCategoryFromSubmenu()}}</span>
   </div>
-
-  <div class="upgrade-section">
+  @if(isBuildingUpgradeButton) {
+    <div class="upgrade-section">
     <h4>Current Level</h4>
     <span class="resource-name">{{currentAssetLevel}}</span>
   </div>
+  }@else if (isResearchUpgradeButton){
+    <div class="upgrade-section">
+      <h4>Current Level</h4>
+      <span class="resource-name">{{currentResearchLvl()}}</span>
+    </div>
+  }
+  
   @if (isBuildingUpgradeButton) {
     <!-- Upgrade Button with label -->
   <div class="upgrade-section">
