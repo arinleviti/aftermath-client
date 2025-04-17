@@ -8,6 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UpgradeDto } from '../../dtos/upgradeDto';
 import { TownDto } from '../../dtos/townDto';
 import { ApiResponseDto } from '../../dtos/apiResponseDto';
+import { CalculateResearchCost, CalculateUpgradeCost} from '../../utilities/calculateUpgradeCost';
+import { CostDto } from '../../dtos/costDto';
 
 @Component({
   selector: 'app-upgrade-assets-window',
@@ -28,6 +30,8 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   upgradeDtoObj: UpgradeDto | null = null;
   isBuildingUpgradeButton: boolean = false;
   isResearchUpgradeButton: boolean = false;
+
+  cost = signal<CostDto>({ metal: 0, water: 0, oil: 0 });
 
   modelResponse = signal< ApiResponseDto | undefined>(undefined); 
 
@@ -60,19 +64,6 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   
   }
 
-/* ngOnInit(): void {
-  this.itemType = this.findCorrespondingNumber();
-  this.findTownId().subscribe({
-    next: (townId) => {
-      this.currentTownId = townId;
-      console.log('Current town ID:', this.currentTownId);
-    },
-    error: (err) => {
-      console.error('Error retrieving town ID:', err);
-    }
-  });
-  
-} */
 // Get the corresponding number for the selected category
   findCorrespondingNumber(): number | null {
 
@@ -95,7 +86,11 @@ export class UpgradeAssetsWindowComponent implements OnInit {
         if (town)
         this.currentAssetLevel = this.findCurrentAssetLevel(this.itemType, town);
         
+        
         console.log('Town found:', town);
+        console.log('Current asset level:', this.currentAssetLevel);
+        console.log('Upgrade cost:', this.cost());
+        
         if (town) {
           console.log('Town found:', town);
           this.buttonSwitcher(town.id);
@@ -103,6 +98,9 @@ export class UpgradeAssetsWindowComponent implements OnInit {
             this.retrieveModelData(this.accountService.userId);
             this.currentResearchLvl.set(this.findcurrentResearchLvl(this.itemType, this.accountService.userId));
             console.log('Current research level:', this.currentResearchLvl);
+            this.cost.set(CalculateResearchCost(this.itemType, this.currentResearchLvl()));
+          } else {
+            this.cost.set(CalculateUpgradeCost(this.itemType, this.currentAssetLevel));
           }
           return town.id;         
         } else {
@@ -189,6 +187,8 @@ export class UpgradeAssetsWindowComponent implements OnInit {
       }
     })
   }
+
+  
 
   findcurrentResearchLvl(itemType: number | null, userId: number | null) : number {
     if (userId === null) {

@@ -52,21 +52,21 @@
         <!-- <img src="" alt="Metal" /> -->
         <div class="cost-label">
           <span class="cost-name">Metal:</span>
-          <span class="cost-value">{{ submenuItem?.cost?.metal || 0 }}</span>
+          <span class="cost-value">{{ cost().metal }}</span>
         </div>
       </div>
       <div class="cost-box water-cost">
         <!-- <img src="" alt="Water" /> -->
         <div class="cost-label">
           <span class="cost-name">Water:</span>
-          <span class="cost-value">{{ submenuItem?.cost?.water || 0 }}</span>
+          <span class="cost-value">{{ cost().water || 0 }}</span>
         </div>
       </div>
       <div class="cost-box oil-cost">
         <!-- <img src="" alt="Oil" /> -->
         <div class="cost-label">
           <span class="cost-name">Oil:</span>
-          <span class="cost-value">{{ submenuItem?.cost?.oil || 0 }}</span>
+          <span class="cost-value">{{ cost().oil || 0 }}</span>
         </div>
       </div>
     </div>
