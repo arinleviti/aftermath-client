@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output, signal, untracked } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, signal, untracked, WritableSignal } from '@angular/core';
 import { BuildingDataService } from '../../_services/building-data.service';
 import { SubmenuData } from '../../interfaces/submenuData';
 import { ItemType } from '../../shared/enums/itemType';
@@ -10,6 +10,7 @@ import { TownDto } from '../../dtos/townDto';
 import { ApiResponseDto } from '../../dtos/apiResponseDto';
 import { CalculateResearchCost, CalculateUpgradeCost} from '../../utilities/calculateUpgradeCost';
 import { CostDto } from '../../dtos/costDto';
+import { UpgradeLogicService } from '../../_services/upgradeWindowServices/upgrade-logic.service';
 
 @Component({
   selector: 'app-upgrade-assets-window',
@@ -23,17 +24,21 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   submenuItem: SubmenuData | null = null;
   accountService = inject(AccountService);
   currentTownId: number | null = null;
-  selectedCategoryFromSubmenu = input<string | null>();
+  selectedCategoryFromSubmenu = input<string | null>(null);
   currentAssetLevel: number | null = null;
   currentResearchLvl= signal<number | null>(null);
   itemType: number | null  =null;
   upgradeDtoObj: UpgradeDto | null = null;
-  isBuildingUpgradeButton: boolean = false;
-  isResearchUpgradeButton: boolean = false;
+  isBuildingUpgradeButton: WritableSignal<boolean> = signal<boolean>(false);
+  isResearchUpgradeButton: WritableSignal<boolean> = signal<boolean>(false);
+  
 
   cost = signal<CostDto>({ metal: 0, water: 0, oil: 0 });
 
   modelResponse = signal< ApiResponseDto | undefined>(undefined); 
+
+
+  private upgradeLogicService = inject(UpgradeLogicService);
 
   ngOnInit(): void {
     this.initializeWindow(); // force it on component init
@@ -51,7 +56,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   }); 
 
   initializeWindow() {
-    this.itemType = this.findCorrespondingNumber();
+    this.itemType = this.upgradeLogicService.findCorrespondingNumber(this.selectedCategoryFromSubmenu);
   this.findTownId().subscribe({
     next: (townId) => {
       this.currentTownId = townId;
@@ -64,27 +69,14 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   
   }
 
-// Get the corresponding number for the selected category
-  findCorrespondingNumber(): number | null {
 
-    const selected = this.selectedCategoryFromSubmenu();
-    if (selected && selected in ItemType) {
-      const correspNumber = ItemType[selected as keyof typeof ItemType];
-      console.log('Corresponding number for selected category:', correspNumber);
-      console.log('Selected category:', selected);
-      return correspNumber;
-    } else {
-      console.error('Invalid selected category:', selected);
-      return null;
-    }
-  }
 // Retrieve the town ID from the account service
   findTownId(): Observable<number> {
     return this.accountService.retrieveModelData(this.accountService.userId).pipe(
       map((response) => {
         const town = response.selectedTown;
         if (town)
-        this.currentAssetLevel = this.findCurrentAssetLevel(this.itemType, town);
+        this.currentAssetLevel = this.upgradeLogicService.findCurrentAssetLevel(this.itemType, town);
         
         
         console.log('Town found:', town);
@@ -93,10 +85,10 @@ export class UpgradeAssetsWindowComponent implements OnInit {
         
         if (town) {
           console.log('Town found:', town);
-          this.buttonSwitcher(town.id);
-          if(this.isResearchUpgradeButton === true) {
+          this.upgradeLogicService.buttonSwitcher(town.id, this.itemType, this.isBuildingUpgradeButton, this.isResearchUpgradeButton);
+          if(this.isResearchUpgradeButton() === true) {
             this.retrieveModelData(this.accountService.userId);
-            this.currentResearchLvl.set(this.findcurrentResearchLvl(this.itemType, this.accountService.userId));
+            this.currentResearchLvl.set(this.upgradeLogicService.findCurrentResearchLvl(this.itemType, this.accountService.userId, this.modelResponse));
             console.log('Current research level:', this.currentResearchLvl);
             this.cost.set(CalculateResearchCost(this.itemType, this.currentResearchLvl()));
           } else {
@@ -110,23 +102,9 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     );
   }
 
-  buttonSwitcher(currentTownId: number | null) {
-    if (this.itemType === null || currentTownId === null) {
-      console.error('Invalid item type or town ID');
-      return;
-    }
-    if (this.itemType >= 0 && this.itemType <= 10) {
-      this.isBuildingUpgradeButton = true;
-      this.isResearchUpgradeButton = false;
-    }
-    if( this.itemType >= 31 && this.itemType <= 39) {
-      this.isBuildingUpgradeButton = false;
-      this.isResearchUpgradeButton = true;
-    }
 
-  }
 
-  upgradeBService = this.accountService.upgradeBuildings(this.upgradeDtoObj);
+  /* upgradeBService = this.accountService.upgradeBuildings(this.upgradeDtoObj); */
   // Handle the upgrade process
   upgradeBuilding() {
     if (this.itemType === null || this.currentTownId === null) {
@@ -134,7 +112,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
       return;
     }
 
-    this.upgradeDtoObj = this.createUpgradeDto(this.currentTownId, this.itemType);
+    this.upgradeDtoObj = this.upgradeLogicService.createUpgradeDto(this.currentTownId, this.itemType);
     this.accountService.upgradeBuildings(this.upgradeDtoObj).subscribe({
       next: (result) => {
         console.log('Upgrade successful:', result);
@@ -150,7 +128,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
       console.error('Invalid item type or town ID');
       return;
     }
-    this.upgradeDtoObj = this.createUpgradeDto(this.currentTownId, this.itemType);
+    this.upgradeDtoObj = this.upgradeLogicService.createUpgradeDto(this.currentTownId, this.itemType);
     this.accountService.research(this.upgradeDtoObj).subscribe({
       next: (result) => {
         this.retrieveModelData(this.accountService.userId);
@@ -167,15 +145,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     this.closeWindow.emit(true);
   }
 
-  createUpgradeDto(townId: number, itemType: number | null): UpgradeDto {
-    if (itemType === null) {
-      throw new Error('Item type cannot be null when creating UpgradeDto');
-    }
-    return {
-      townId: townId,
-      itemType: itemType
-    };
-  }
+  
 
   retrieveModelData(userId: number) {
     this.accountService.retrieveModelData(userId).subscribe({
@@ -190,34 +160,5 @@ export class UpgradeAssetsWindowComponent implements OnInit {
 
   
 
-  findcurrentResearchLvl(itemType: number | null, userId: number | null) : number {
-    if (userId === null) {
-      throw new Error('User ID cannot be null when finding current research');
-    }
-    switch (itemType) {
-      case 31: return this.modelResponse()?.user.combustionLvl ?? 0;
-      case 32: return this.modelResponse()?.user.electricityLvl ?? 0;
-      case 33: return this.modelResponse()?.user.leaderShipLvl ?? 0;
-      case 34: return this.modelResponse()?.user.machineryLvl ?? 0;
-      case 35: return this.modelResponse()?.user.scoutingLvl ?? 0;
-      case 36: return this.modelResponse()?.user.weaponsLvl ?? 0;
-      case 37: return this.modelResponse()?.user.shieldLvl ?? 0;
-      case 38: return this.modelResponse()?.user.structuralLvl ?? 0;
-      case 39: return this.modelResponse()?.user.survivalLvl ?? 0;
-      default: return 0;
-    }
-  }
-
-  findCurrentAssetLevel(itemType: number | null , townDto: TownDto): number {
-    switch (itemType) {
-      case 0: return townDto.metalLvl;
-      case 1: return townDto.metalStorageLvl
-      case 2: return townDto.oilLvl;
-      case 3: return townDto.oilStorageLvl;
-      case 4: return townDto.waterLvl;
-      case 5: return townDto.waterStorageLvl;
-      case 6: return townDto.solarPlantLvl;
-      default: return 0; 
-    }
-  }
+  
 }

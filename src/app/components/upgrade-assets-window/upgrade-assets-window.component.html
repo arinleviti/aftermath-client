@@ -6,27 +6,27 @@
    </div>
  
    <div class="upgrade-section">
-    @if(isBuildingUpgradeButton) {
+    @if(isBuildingUpgradeButton()) {
       <h4>Building</h4>
-    } @else if(isResearchUpgradeButton) {
+    } @else if(isResearchUpgradeButton()) {
       <h4>Research Facility</h4>
     }
     
     <span class="resource-name">{{selectedCategoryFromSubmenu()}}</span>
   </div>
-  @if(isBuildingUpgradeButton) {
+  @if(isBuildingUpgradeButton()) {
     <div class="upgrade-section">
     <h4>Current Level</h4>
     <span class="resource-name">{{currentAssetLevel}}</span>
   </div>
-  }@else if (isResearchUpgradeButton){
+  }@else if (isResearchUpgradeButton()){
     <div class="upgrade-section">
       <h4>Current Level</h4>
       <span class="resource-name">{{currentResearchLvl()}}</span>
     </div>
   }
   
-  @if (isBuildingUpgradeButton) {
+  @if (isBuildingUpgradeButton()) {
     <!-- Upgrade Button with label -->
   <div class="upgrade-section">
     <h4>Upgrade Building</h4>
@@ -35,7 +35,7 @@
     </button>
   </div>
   }
-  @else if (isResearchUpgradeButton) {
+  @else if (isResearchUpgradeButton()) {
     <div class="upgrade-section">
       <h4>Research</h4>
       <button class="upgrade-button" (click)="upgradeResearch()">
