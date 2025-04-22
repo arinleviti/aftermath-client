@@ -36,8 +36,8 @@ export class SettlementHomeComponent implements OnInit {
       metal: Math.floor(model?.selectedTown?.metal ?? 0),
       oil: Math.floor(model?.selectedTown?.oil ?? 0),
       water: Math.floor(model?.selectedTown?.water ?? 0),
-      energy: 0,
-      uranium: Math.floor(model?.selectedTown?.uranium ?? 0)
+      uranium: Math.floor(model?.selectedTown?.uranium ?? 0),
+      currentTown: model?.selectedTown ?? null
     };
   });
   

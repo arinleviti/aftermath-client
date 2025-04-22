@@ -10,7 +10,7 @@ import { ItemType } from '../../shared/enums/itemType';
 })
 export class UpgradeLogicService {
 
-  
+  serverSpeed: number = 1;
 
    findCurrentResearchLvl(itemType: number | null, userId: number | null, modelResponse: Signal< ApiResponseDto | undefined>) : number {
       if (userId === null) {
@@ -84,5 +84,23 @@ export class UpgradeLogicService {
           }
         }
 
+        calculateSolarEnergyProduced(town : TownDto): number {
+          return (20 * town.solarPlantLvl * Math.pow(1.1, town.solarPlantLvl));
+        }
+
+        calculateWindEnergyProduced(town : TownDto): number {
+          return (town.windmills ) * town.windSpeed;
+
+        }
+
+        calculateEnergyProduced(town : TownDto): number {
+          return this.calculateSolarEnergyProduced(town) + this.calculateWindEnergyProduced(town);
+        }
+
+        calculateResearchTime(town : TownDto): number {
+          var timeInHours = (town.metal + town.water) / (1000 + (1 + town.laboratoryLvl))
+          var timeinSec = Math.floor((3600 * timeInHours) / this.serverSpeed);
+          return timeinSec;
+        }
          
 }

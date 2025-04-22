@@ -40,6 +40,9 @@ export class UpgradeAssetsWindowComponent implements OnInit {
 
   private upgradeLogicService = inject(UpgradeLogicService);
 
+  timeLeft: number = 0; // current remaining time in seconds
+  countdownInterval: any; // reference to the interval for cleanup
+
   ngOnInit(): void {
     this.initializeWindow(); // force it on component init
     this.retrieveModelData(this.accountService.userId);
@@ -158,7 +161,35 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     })
   }
 
-  
+  startResearchCountdown(){
+    this.countdownInterval = setInterval(() => {
+      if (this.timeLeft <= 1) {
+        clearInterval(this.countdownInterval);
+        this.timeLeft = 0;
+      }else {
+        this.timeLeft--;
+      }
+    }, 1000)
+  }
+
+  get formattedTime(): string {
+
+    const town = this.modelResponse()?.selectedTown;
+
+    if (!town || !this.isResearchUpgradeButton()) {
+      return '00:00';
+    }
+
+    const seconds = this.upgradeLogicService.calculateResearchTime(town);
+    const minutes = Math.floor(this.timeLeft / 60);
+    const remSeconds = seconds % 60;
+    return `${this.padZero(minutes)}:${this.padZero(remSeconds)}`;
+  }
+//ensures that the time value (whether it's minutes or seconds)
+//  is always formatted as a two-digit number, even if it's less than 10.
+  private padZero(time: number): string {
+    return time < 10 ? `0${time}` : `${time}`;
+  }
 
   
 }
