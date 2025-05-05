@@ -1,5 +1,6 @@
 <!-- upgrade-asset-window.component.html -->
 <div class="upgrade-window">
+  <img src="./backgroundImgs/Main-Window.png" alt="" class="bg-decor">
   <!-- Close Button -->
    <div>
      <button class="close-button" (click)="onCloseWindow()" title="Close window">X</button>
@@ -71,6 +72,17 @@
       </div>
     </div>
   </div>
+
+<!-- upgrade time -->
+ <div class="costs-section">
+  <div class="cost-boxes">
+    <h4>Time needed to Upgrade</h4>
+   
+          <span class="cost-value">{{ formattedTime}}</span>
+  </div>
+
+  
+ </div>
 
   <!-- Building Image with label -->
   <div class="building-section">

@@ -1,48 +1,87 @@
 .main-content {
-    display: flex;
-    max-height: 100vh; /* Ensures it fills the viewport (or use fixed px) */
-    position: relative; /* Optional: Helps with positioning */
-  }
-  .settlement-name {
-    position: relative;
-    margin-top: auto;
-    width: 100%;
-  }
-  
-  h3 {
-    margin: 0;
-    text-align: right; /* If you want right-aligned text */
-  }
 
-  .town-specs dl {
-    position: absolute;
+  width: 100%;
+  height: 100%; /* Fill settlement-content, which is 75vh */
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* BACKGROUND IMAGE */
+.bg-decor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Stretch but maintain aspect */
+  z-index: -0;
+  display: block; /* <-- Add this */
+}
+
+/* SETTLEMENT NAME */
+.settlement-name {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  padding: 1rem;
+  z-index: 1;
+  color: rgb(193, 184, 15);
+}
+
+.settlement-name h3 {
+  margin: 0;
+  text-align: right; /* Right-align text */
+  z-index: 1; /* Above background */
+  color: rgb(193, 184, 15);
+}
+
+/* TOWN SPECS */
+.town-specs {
+  position: absolute;
   top: 100px;
   right: 50px;
-  /* Removed flex/gap to use grid instead */
-  display: grid; /* NEW: Switch to grid for column control */
-  grid-template-columns: auto 1fr; /* NEW: dt | dd */
-  gap: 0.5rem 1rem; /* NEW: row | column gap */
-  }
-  .spec-item {
-    display: contents; /* NEW: Breaks out of flex, aligns to grid */
-  }
-  dt {
-    font-weight: bold;
-  }
+  z-index: 1; /* Above background */
 
-  /* POSITION (updated for alignment) */
-.position dl{
+}
+
+.town-specs dl {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Label | Value */
+  gap: 0.5rem 1rem; /* Row gap | Column gap */
+  margin: 0; /* Remove default dl margin */
+
+}
+
+.town-specs .spec-item {
+  display: contents; /* Allow dt and dd to be placed inside grid */
+  color: rgb(193, 184, 15);
+}
+
+.town-specs dt {
+  font-weight: bold;
+}
+
+/* POSITION INFO */
+.position {
   position: absolute;
   top: 400px;
   right: 115px;
-  /* Removed flex/gap to use grid instead */
-  display: grid; /* NEW: Switch to grid for column control */
-  grid-template-columns: auto 1fr; /* NEW: dt | dd */
-  gap: 0.5rem 1rem; /* NEW: row | column gap */
+  z-index: -1; /* Above background */
 }
+
+.position dl {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Label | Value */
+  gap: 0.5rem 1rem;
+  margin: 0;
+}
+
 .position .spec-item {
-  display: contents; /* NEW: Breaks out of flex, aligns to grid */
+  display: contents;
 }
+
 .position dt {
   font-weight: bold;
 }

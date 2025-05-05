@@ -1,8 +1,10 @@
-import { Injectable, Input, Signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, Input, Signal, WritableSignal } from '@angular/core';
 import { TownDto } from '../../dtos/townDto';
 import { UpgradeDto } from '../../dtos/upgradeDto';
 import { ApiResponseDto } from '../../dtos/apiResponseDto';
 import { ItemType } from '../../shared/enums/itemType';
+import { HttpClient } from '@angular/common/http';
+import { API_BASE_URL } from '../../injection-tokens/app.config';
 
 
 @Injectable({
@@ -10,7 +12,9 @@ import { ItemType } from '../../shared/enums/itemType';
 })
 export class UpgradeLogicService {
 
-  serverSpeed: number = 1;
+  private http = inject(HttpClient);
+  private apiUrl = inject(API_BASE_URL);
+  serverSpeedInSec: number = 1;
 
    findCurrentResearchLvl(itemType: number | null, userId: number | null, modelResponse: Signal< ApiResponseDto | undefined>) : number {
       if (userId === null) {
@@ -97,10 +101,25 @@ export class UpgradeLogicService {
           return this.calculateSolarEnergyProduced(town) + this.calculateWindEnergyProduced(town);
         }
 
-        calculateResearchTime(town : TownDto): number {
-          var timeInHours = (town.metal + town.water) / (1000 + (1 + town.laboratoryLvl))
-          var timeinSec = Math.floor((3600 * timeInHours) / this.serverSpeed);
+        calculateResearchTime(town : TownDto, metalCost: number, waterCost: number): number {
+          var timeInHours = (metalCost + waterCost) / (1000 + (1 + town.laboratoryLvl))
+          var timeinSec = Math.floor((3600 * timeInHours) / this.serverSpeedInSec);
           return timeinSec;
+        }
+        loadServerSpeed(): Promise<number> {
+          return new Promise((resolve, reject) => {
+            this.http.get<number>(`${this.apiUrl}/GetServerSpeed`).subscribe({
+              next: (response) => {
+                this.serverSpeedInSec = response;
+                resolve(response);
+              },
+              error: (err) => {
+                console.error('Failed to fetch server speed', err);
+                reject(err);
+              }
+            });
+          });
+        }
         }
          
 }

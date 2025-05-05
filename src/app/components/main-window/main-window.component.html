@@ -1,10 +1,9 @@
 <div class="main-content">
-    <div class="settlement-name">
-        <h3>{{settlementData()?.settlement ?? 'no settlement'}}</h3>
-    </div>
-      
-</div>
-<div class="town-specs">
+  <img src="./backgroundImgs/Main-Window.png" alt="" class="bg-decor">
+  <div class="settlement-name">
+    <h3>{{settlementData()?.settlement ?? 'no settlement'}}</h3>
+  </div>
+  <div class="town-specs">
     <dl>
       <div class="spec-item">
         <dt>Wind Speed</dt>
@@ -17,19 +16,20 @@
     </dl>
   </div>
 
-<div class=" position">
+  <div class=" position">
     <dl>
-        <div class="spec-item">
-            <dt>Continent</dt>
-            <dd>{{settlementData()?.continent ?? 'n/a' }}</dd>
-        </div>
-        <div class="spec-item">
-            <dt>Region</dt>
-            <dd>{{settlementData()?.region ?? 'n/a' }}</dd>
-        </div>
-         <div class="spec-item">
-            <dt>Area</dt>
-            <dd>{{settlementData()?.area ?? 'n/a' }}</dd>
-        </div>
+      <div class="spec-item">
+        <dt>Continent</dt>
+        <dd>{{settlementData()?.continent ?? 'n/a' }}</dd>
+      </div>
+      <div class="spec-item">
+        <dt>Region</dt>
+        <dd>{{settlementData()?.region ?? 'n/a' }}</dd>
+      </div>
+      <div class="spec-item">
+        <dt>Area</dt>
+        <dd>{{settlementData()?.area ?? 'n/a' }}</dd>
+      </div>
     </dl>
+  </div>
 </div>

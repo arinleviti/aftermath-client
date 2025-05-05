@@ -20,12 +20,14 @@
   (submenuItemSelectedOut) = "selectedItemFromSubmenu" retrieves the submenu item clicked -->
 } 
 
-@if(submenuItemClicked){
+  @if(submenuItemClicked){
   <div class="upgrade-asset-window">
     <app-upgrade-assets-window 
     (closeWindow)="onUpgradeWindowClosed()"
     [selectedCategoryFromSubmenu] = "selectedItemFromSubmenu"></app-upgrade-assets-window>
   </div>
 }
+
+
 
 

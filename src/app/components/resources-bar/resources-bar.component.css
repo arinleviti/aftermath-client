@@ -1,51 +1,55 @@
 .navbar {
-    background: rgba(0, 0, 0, 0.9); /* Dark background for a futuristic look */
-    padding: 15px 20px;
+  position: relative;
+    background: rgba(0, 0, 0, 0); /* Dark background for a futuristic look */
+    padding: 5px 80px 18px;
     display: flex;
-    justify-content: center; /* Centers the items */
-    box-shadow: 0 0 10px cyan; /* Neon glow effect */
-    height: 60px;
+    /* justify-content: center; */ /* Centers the items */
+    box-shadow: 0 0 15px rgb(4, 37, 37); /* Neon glow effect */
+    height: 95px;
+    display: grid;
+    grid-template-columns: 1fr auto; /* Left half empty, right half for resources */
+    
   }
   
   .navbar ul {
-    list-style: none; /* Removes default bullet points */
-    margin: 0;
-    padding: 0;
-    display: flex; /* Makes items appear in a row */
-    gap: 30px; /* Adds spacing between items */
-    align-items: center; /* Ensures all items are vertically centered */
+    display: flex; /* Flexbox for the resource list */
+    list-style: none;
+
+    gap: 80px; /* Space between items */
+    justify-content: flex-end; /* 👈 Push items to the right edge */
   }
   
   .navbar li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-width: 80px; /* Adjust as needed */
-    padding: 0 15px; /* Added horizontal padding */
-    height: 40px; /* Box height */
-    background: rgba(0, 255, 255, 0.2);
-    border-radius: 8px;
-    box-shadow: 0 0 5px cyan;
-    font-size: 20px;
+    height: 40px;
+    font-size: 15px;
     font-family: 'Orbitron', sans-serif;
     font-weight: bold;
-    color: cyan;
-    position: relative; /* Needed for absolute positioning of the label */
+    color: rgb(193, 184, 15);
   }
   
-  .navbar li span {
-    font-size: 14px;
-    color: lightcyan;
+  span {
+    font-size: 13px;
+    color: rgb(15, 171, 207);
     text-transform: uppercase;
-    font-weight: normal;
-    position: absolute;
-    bottom: -25px; /* Moves label below the box */
+    font-weight: bold;
+    text-align: center;
     white-space: nowrap;
+    margin-top: 0px;
+    padding-top: 0px;
   }
   
-  .navbar li:hover {
-    background: cyan;
-    color: black;
-    box-shadow: 0 0 15px cyan;
+  .bg-decor {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  .iconImg {
+    width: 30px; /* Fixed width for consistency */
+    padding: 5px 0;
   }

@@ -40,7 +40,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
 
   private upgradeLogicService = inject(UpgradeLogicService);
 
-  timeLeft: number = 0; // current remaining time in seconds
+  timeLeft = signal<number>(0); // current remaining time in seconds
   countdownInterval: any; // reference to the interval for cleanup
 
   ngOnInit(): void {
@@ -154,6 +154,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     this.accountService.retrieveModelData(userId).subscribe({
       next: response => {
         this.modelResponse.set(response);
+        this.calcResearchTime();
       },
       error: err => {
         console.error('Error occured while retrieving the model', err);
@@ -161,29 +162,51 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     })
   }
 
+  async calcResearchTime() {
+    const town = this.modelResponse()?.selectedTown;
+    if (!town) return;
+    
+    try {
+      await this.upgradeLogicService.loadServerSpeed(); // Wait until server speed is loaded
+      this.timeLeft.set(
+        this.upgradeLogicService.calculateResearchTime(town, this.cost().metal, this.cost().water)
+      );
+      return this.timeLeft;
+    } catch (error) {
+      console.error('Failed to calculate research time due to server speed fetch error.', error);
+    }
+  }
+
   startResearchCountdown(){
+    const town = this.modelResponse()?.selectedTown;
+    if (!town) return;
+  
+    // Calculate research time in seconds
+    this.timeLeft.set(this.upgradeLogicService.calculateResearchTime(town, this.cost().metal, this.cost().water)) ;
+  
+    // Clear any previous interval (good practice)
+  if (this.countdownInterval) {
+    clearInterval(this.countdownInterval);
+  }
+    // Now start the countdown
     this.countdownInterval = setInterval(() => {
-      if (this.timeLeft <= 1) {
+      if (this.timeLeft() <= 1) {
         clearInterval(this.countdownInterval);
-        this.timeLeft = 0;
-      }else {
-        this.timeLeft--;
+        this.timeLeft.set(0);
+      } else {
+        this.timeLeft.update(current => current - 1);
       }
-    }, 1000)
+    }, 1000);
   }
 
   get formattedTime(): string {
-
-    const town = this.modelResponse()?.selectedTown;
-
-    if (!town || !this.isResearchUpgradeButton()) {
+    const time = this.timeLeft(); // read signal value
+    if (time <= 0) {
       return '00:00';
     }
-
-    const seconds = this.upgradeLogicService.calculateResearchTime(town);
-    const minutes = Math.floor(this.timeLeft / 60);
-    const remSeconds = seconds % 60;
-    return `${this.padZero(minutes)}:${this.padZero(remSeconds)}`;
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${this.padZero(minutes)}:${this.padZero(seconds)}`;
   }
 //ensures that the time value (whether it's minutes or seconds)
 //  is always formatted as a two-digit number, even if it's less than 10.

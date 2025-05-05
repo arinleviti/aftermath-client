@@ -1,23 +1,38 @@
 <nav class="navbar">
+  <img src="./backgroundImgs/StripesDarkHor.png" alt="Decorative background" class="bg-decor">
   <ul>
-    <li>{{ resources()?.metal }}
+    <li class="element">
       <span>Metal</span>
+      <img src="./backgroundImgs/Metal.png" alt="" class="iconImg">    
+      {{ resources()?.metal }}
     </li>
-      
-    <li>{{ resources()?.water }}
+       
+    <li class="element">
       <span>Water</span>
+      <img src="./backgroundImgs/Water.png" alt="" class="iconImg">
+      {{ resources()?.water }}
+      
     </li>
 
-    <li>{{ resources()?.oil }}
-      <span>Oil</span>
+    <li class="element">
+       <span>Oil</span>
+       <img src="./backgroundImgs/Oil.png" alt="" class="iconImg">
+      {{ resources()?.oil }}
+     
     </li>
 
-    <li>{{energy()}}
-      <span>Energy</span>
+    <li class="element">
+       <span>Energy</span>
+       <img src="./backgroundImgs/Energy.png" alt="" class="iconImg">
+      {{energy()}}
+     
     </li>
       
-    <li>{{ resources()?.uranium }}
+    <li class="element">
       <span>Uranium</span>
+      <img src="./backgroundImgs/Uranium.png" alt="" class="iconImg">
+      {{ resources()?.uranium }}
+      
     </li>
 
     
