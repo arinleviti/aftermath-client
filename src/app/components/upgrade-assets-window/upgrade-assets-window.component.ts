@@ -164,7 +164,10 @@ export class UpgradeAssetsWindowComponent implements OnInit {
 
   async calcResearchTime() {
     const town = this.modelResponse()?.selectedTown;
-    if (!town) return;
+    if (!town) {
+      this.timeLeft.set(0);
+      return this.timeLeft;
+    }
     
     try {
       await this.upgradeLogicService.loadServerSpeed(); // Wait until server speed is loaded
@@ -174,6 +177,8 @@ export class UpgradeAssetsWindowComponent implements OnInit {
       return this.timeLeft;
     } catch (error) {
       console.error('Failed to calculate research time due to server speed fetch error.', error);
+      this.timeLeft.set(0);
+      return this.timeLeft;
     }
   }
 

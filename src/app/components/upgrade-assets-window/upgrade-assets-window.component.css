@@ -11,6 +11,12 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
+
+    /* ADD GRID SETTINGS */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 columns */
+    grid-template-rows: auto; /* rows adjust based on content */
+    gap: 5px; /* space between grid items */
   }
   
   /* Close button - ensure it's on top */
@@ -51,10 +57,10 @@
   /* Cost boxes positioning */
   .cost-boxes {
     position: relative; /* Changed from absolute */
-    display: flex;
+ /*    display: flex; */
     gap: 10px;
     margin-top: 20px;
-    justify-content: flex-end;
+/*     justify-content: flex-end; */
     color: rgb(193, 184, 15);
   }
   

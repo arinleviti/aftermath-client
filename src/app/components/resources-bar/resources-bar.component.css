@@ -53,3 +53,14 @@
     width: 30px; /* Fixed width for consistency */
     padding: 5px 0;
   }
+
+  .logo {
+    position: absolute; /* ⬅️ Make it absolute so it can "float" over things */
+  top: 0;             /* ⬅️ Align to top of the navbar */
+  left: 0;            /* ⬅️ Align to left */
+  height: 100px;       /* ⬅️ Make the logo as tall as the navbar (optional) */
+  object-fit: contain; /* ⬅️ (optional) keeps the aspect ratio */
+  z-index: 1;         /* ⬅️ Appear ABOVE the background */
+  padding-left: 50px;
+  padding-top: 8px; /* ⬅️ Add some space from the top and left */
+  }

@@ -72,17 +72,20 @@
       </div>
     </div>
   </div>
-
-<!-- upgrade time -->
+  @if (isResearchUpgradeButton())
+  {
+    <!-- upgrade time -->
  <div class="costs-section">
   <div class="cost-boxes">
-    <h4>Time needed to Upgrade</h4>
+    <h4>Time in seconds to Upgrade</h4>
    
           <span class="cost-value">{{ formattedTime}}</span>
   </div>
 
   
  </div>
+  }
+
 
   <!-- Building Image with label -->
   <div class="building-section">
