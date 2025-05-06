@@ -1,1 +1,4 @@
-{}
+{
+    "appService.defaultWebAppToDeploy": "",
+    "appService.deploySubpath": "dist\\aftermath-client\\browser"
+}
