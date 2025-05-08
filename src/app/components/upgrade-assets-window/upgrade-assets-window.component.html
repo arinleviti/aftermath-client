@@ -6,30 +6,31 @@
      <button class="close-button" (click)="onCloseWindow()" title="Close window">X</button>
    </div>
  
-   <div class="upgrade-section">
+   <div class="upgrade-section header">
     @if(isBuildingUpgradeButton()) {
       <h4>Building</h4>
     } @else if(isResearchUpgradeButton()) {
       <h4>Research Facility</h4>
     }
+    <span>{{selectedCategoryFromSubmenu()}}</span>
+    </div>
     
-    <span class="resource-name">{{selectedCategoryFromSubmenu()}}</span>
-  </div>
+  
   @if(isBuildingUpgradeButton()) {
-    <div class="upgrade-section">
+    <div class="upgrade-section current-level-building">
     <h4>Current Level</h4>
-    <span class="resource-name">{{currentAssetLevel}}</span>
+    <span >{{currentAssetLevel}}</span>
   </div>
   }@else if (isResearchUpgradeButton()){
-    <div class="upgrade-section">
+    <div class="upgrade-section current-level-research">
       <h4>Current Level</h4>
-      <span class="resource-name">{{currentResearchLvl()}}</span>
+      <span >{{currentResearchLvl()}}</span>
     </div>
   }
   
   @if (isBuildingUpgradeButton()) {
     <!-- Upgrade Button with label -->
-  <div class="upgrade-section">
+  <div class="upgrade-section button-label">
     <h4>Upgrade Building</h4>
     <button class="upgrade-button" (click)="upgradeBuilding()">
       UPGRADE TO LEVEL {{ (currentAssetLevel!) + 1 }}
@@ -37,7 +38,7 @@
   </div>
   }
   @else if (isResearchUpgradeButton()) {
-    <div class="upgrade-section">
+    <div class="upgrade-section button-label">
       <h4>Research</h4>
       <button class="upgrade-button" (click)="upgradeResearch()">
         RESEARCH TO UPGRADE
@@ -48,6 +49,7 @@
   <!-- Cost Boxes with title -->
   <div class="costs-section">
     <h4>Upgrade Costs</h4>
+    
     <div class="cost-boxes">
       <div class="cost-box metal-cost">
         <!-- <img src="" alt="Metal" /> -->
@@ -75,7 +77,7 @@
   @if (isResearchUpgradeButton())
   {
     <!-- upgrade time -->
- <div class="costs-section">
+ <div class="costs-section time-section">
   <div class="cost-boxes">
     <h4>Time in seconds to Upgrade</h4>
    
@@ -90,12 +92,12 @@
   <!-- Building Image with label -->
   <div class="building-section">
     <h4>Building Preview</h4>
-    <div class="building-image-container">
-      <!-- <img [src]="'assets/buildings/' + submenuItem?.name + '.png'" [alt]="submenuItem?.name" /> -->
-      <div class="building-name">{{ submenuItem?.name }}</div>
-    </div>
+    
   </div>
+<div class="building-image-container">
+      <img [src]="imgPath()" [alt]="submenuItem?.name" />
 
+    </div>
   <!-- Description section -->
   <div class="description-section">
     <h4>Building Details</h4>

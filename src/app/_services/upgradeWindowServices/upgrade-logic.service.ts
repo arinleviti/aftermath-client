@@ -73,6 +73,39 @@ export class UpgradeLogicService {
     
       }
 
+findCorrespondingImg(selectedCategoryFromSubmenu: Signal<string | null>): string | null {
+        const selected = selectedCategoryFromSubmenu();
+        if (selected ) {
+          switch (selected) {
+            case 'ScrapeYard': return 'BuildingsImgs/scrape-yard.png';
+            case 'WaterPurifier': return 'BuildingsImgs/water-purifier.png';
+            case 'OilRig': return 'BuildingsImgs/oil-rig.png';
+            case 'Warehouse': return 'BuildingsImgs/warehouse.png';
+            case 'WaterTank': return 'BuildingsImgs/water-tank.png';
+            case 'OilTank': return 'BuildingsImgs/oil-tank.png';
+            case 'SolarPlant': return 'BuildingsImgs/solar-plant.png';
+            case 'Workshop': return 'BuildingsImgs/workshop.png';
+            case 'Garage': return 'BuildingsImgs/garage.png';
+            case 'Laboratory': return 'BuildingsImgs/laboratory.png';
+            case 'Electricity': return 'ResearchImgs/electricity.png';
+            case 'Machinery': return 'ResearchImgs/machinery.png';
+            case 'Combustion': return 'ResearchImgs/combustion.png';
+            case 'Scouting': return 'ResearchImgs/scouting.png';
+            case 'Survival': return 'ResearchImgs/survival.png';
+            case 'Leadership': return 'ResearchImgs/leadership.png';
+            case 'Shield': return 'ResearchImgs/shield.png';
+            case 'Weapons': return 'ResearchImgs/weapons.png';
+            case 'Structural': return 'ResearchImgs/structural.png';
+            case 'Armored Car': return 'ResearchImgs/armoredcar.png';
+            default: console.error('Invalid selected category:', selected); return null;
+        }
+        } else {
+          console.error('Invalid selected category:', selected);
+          return null;
+        }
+      }
+
+
       // Get the corresponding number for the selected category
         findCorrespondingNumber(selectedCategoryFromSubmenu : Signal<string | null>): number | null {
       

@@ -31,12 +31,11 @@ export class UpgradeAssetsWindowComponent implements OnInit {
   upgradeDtoObj: UpgradeDto | null = null;
   isBuildingUpgradeButton: WritableSignal<boolean> = signal<boolean>(false);
   isResearchUpgradeButton: WritableSignal<boolean> = signal<boolean>(false);
-  
 
   cost = signal<CostDto>({ metal: 0, water: 0, oil: 0 });
 
   modelResponse = signal< ApiResponseDto | undefined>(undefined); 
-
+  imgPath = signal<string | null>('');
 
   private upgradeLogicService = inject(UpgradeLogicService);
 
@@ -60,7 +59,8 @@ export class UpgradeAssetsWindowComponent implements OnInit {
 
   initializeWindow() {
     this.itemType = this.upgradeLogicService.findCorrespondingNumber(this.selectedCategoryFromSubmenu);
-  this.findTownId().subscribe({
+  this.imgPath.set(this.upgradeLogicService.findCorrespondingImg(this.selectedCategoryFromSubmenu));
+    this.findTownId().subscribe({
     next: (townId) => {
       this.currentTownId = townId;
       console.log('Current town ID:', this.currentTownId);
@@ -105,7 +105,7 @@ export class UpgradeAssetsWindowComponent implements OnInit {
     );
   }
 
-
+ 
 
   /* upgradeBService = this.accountService.upgradeBuildings(this.upgradeDtoObj); */
   // Handle the upgrade process

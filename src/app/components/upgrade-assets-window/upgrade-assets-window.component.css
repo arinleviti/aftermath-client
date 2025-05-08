@@ -14,9 +14,9 @@
 
     /* ADD GRID SETTINGS */
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 columns */
-    grid-template-rows: auto; /* rows adjust based on content */
-    gap: 5px; /* space between grid items */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; /* 3 equal columns */
+  grid-template-rows:  auto 1fr 1fr 1fr 1fr 1fr; /* 3 rows */
+  gap: 10px;
   }
   
   /* Close button - ensure it's on top */
@@ -70,11 +70,7 @@
     text-align: center;
   }
   
-  .building-image-container img {
-    max-width: 60%;
-    max-height: 200px;
-
-  }
+  
   
   .description {
     margin-top: 20px;
@@ -91,11 +87,35 @@
   .description-section{
     color: rgb(193, 184, 15);
   }
-  .upgrade-section{
+  .header{
     color: rgb(193, 184, 15);
+    grid-column: 1 ;
+    grid-row: 1;
+  }
+ 
+  .current-level-building{
+    color: rgb(193, 184, 15);
+    grid-column:1;
+    grid-row:2;
+  }
+  .current-level-research{
+    color: rgb(193, 184, 15);
+    grid-column:1;
+    grid-row:2;
+  }
+  .button-label{
+    color: rgb(193, 184, 15);
+    grid-column:1;
+    grid-row:3;
   }
   .costs-section{
     color: rgb(193, 184, 15);
+    grid-column:1;
+    grid-row:4;
+  }
+  .time-section{
+    grid-column:2;
+    grid-row:4;
   }
   /* BACKGROUND IMAGE */
 .bg-decor {
@@ -107,4 +127,12 @@
   object-fit: cover; /* Stretch but maintain aspect */
   z-index: -5;
   display: block; /* <-- Add this */
+}
+.building-image-container{
+  grid-column:4 / span 2; /* starts at column 2, spans across 2 columns */
+  grid-row: 2 / span 2; ;   /* starts at row 2, spans across 2 rows */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
 }
